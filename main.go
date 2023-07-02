@@ -14,6 +14,7 @@ type Weather struct {
 	Location struct {
 		Name    string `json:"name"`
 		Country string `json:"country"`
+		Hour    string `json:"localtime"`
 	} `json:"location"`
 
 	Current struct {
@@ -54,6 +55,9 @@ func main() {
 		panic(err)
 	}
 
+	location, current := weather.Location, weather.Current
+
+	fmt.Printf("%s, %s, %.0f°C, %s \n", location.Name, location.Country, current.TempC, location.Hour)
 }
 
 func apiUrl(apiKey string, city string) string {
