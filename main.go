@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"io"
 	"net/http"
@@ -8,6 +9,20 @@ import (
 
 	"github.com/joho/godotenv"
 )
+
+type Weather struct {
+	Location struct {
+		Name    string `json:"name"`
+		Country string `json:"country"`
+	} `json:"location"`
+
+	Current struct {
+		TempC     float32 `json:"temp_c"`
+		Condition struct {
+			Text string `json:"text"`
+		} `json:"condition"`
+	} `json:"current"`
+}
 
 func main() {
 	godotenv.Load()
@@ -32,7 +47,12 @@ func main() {
 		panic(err)
 	}
 
-	fmt.Println(string(body))
+	var weather Weather
+	err = json.Unmarshal(body, &weather)
+
+	if err != nil {
+		panic(err)
+	}
 
 }
 
