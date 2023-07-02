@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"io"
 	"net/http"
 	"os"
 
@@ -12,8 +13,7 @@ func main() {
 	godotenv.Load()
 	apiKey := os.Getenv("API_KEY")
 
-	fmt.Println(apiKey)
-	res, err := http.Get(apiUrl(apiKey, "DASADS"))
+	res, err := http.Get(apiUrl(apiKey, ""))
 
 	if err != nil {
 		panic(err)
@@ -25,6 +25,14 @@ func main() {
 
 		panic("Weather Api não esta disponivel")
 	}
+
+	body, err := io.ReadAll(res.Body)
+
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Println(string(body))
 
 }
 
