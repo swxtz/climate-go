@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"net/http"
 	"os"
 
 	"github.com/joho/godotenv"
@@ -12,8 +13,18 @@ func main() {
 	apiKey := os.Getenv("API_KEY")
 
 	fmt.Println(apiKey)
-	teste := apiUrl(apiKey, "")
-	fmt.Println(teste)
+	res, err := http.Get(apiUrl(apiKey, "DASADS"))
+
+	if err != nil {
+		panic(err)
+	}
+
+	defer res.Body.Close()
+
+	if res.StatusCode != 200 {
+
+		panic("Weather Api não esta disponivel")
+	}
 
 }
 
